@@ -8,6 +8,9 @@ import { useGSAP } from '@gsap/react';
 const ANIMATION_DURATION:number = 1;
 const OFFSET_DISTANCE:number = 5;
 
+const SCALE_LARGE_DESKTOP:number = 0.08;
+const SCALE_LARGE_MOBILE:number = 0.05;
+
 const fadeMeshes = (group:any, opacity:number) => {
     if(!group) return;
     group.traverse((child:any) =>{
@@ -32,7 +35,7 @@ const ModelSwitcher = ({scale, isMobile}:ModelSwitcherProps) => {
     const smallMacbookRef = useRef<any>(null);
     const largeMacbookRef = useRef<any>(null);
 
-    const showLargeMacbook = scale === 0.05 || scale === 0.08;
+    const showLargeMacbook = scale === SCALE_LARGE_MOBILE || scale === SCALE_LARGE_DESKTOP;
 
     useGSAP(() =>{
         if(showLargeMacbook){

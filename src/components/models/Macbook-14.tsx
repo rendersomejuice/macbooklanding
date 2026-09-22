@@ -74,7 +74,7 @@ export default function MacbookModel14(props: React.JSX.IntrinsicElements['group
         }
       }
     })
-  },[color]);
+  },[color, scene]);
 
   return (
     <group {...props} dispose={null}>
