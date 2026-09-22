@@ -68,9 +68,12 @@ export default function MacbookModel16(props: React.JSX.IntrinsicElements['group
 
   useEffect(()=>{
     scene.traverse((child) => {
-      if(child.isMesh){
-        if(!noChangeParts.includes(child.name)){
-          child.material.color = new THREE.Color(color)
+      if((child as THREE.Mesh).isMesh){
+        const mesh = child as THREE.Mesh
+        if (!noChangeParts.includes(mesh.name)) {
+          if (mesh.material && 'color' in mesh.material) {
+            (mesh.material as THREE.MeshStandardMaterial).color.set(color)
+          }
         }
       }
     })
