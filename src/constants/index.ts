@@ -34,3 +34,48 @@ export const performanceImages = [
             { id: "p6", src: "/performance6.png" },
             { id: "p7", src: "/performance7.png" },
         ];
+
+export const performanceImgPositions = [
+    {
+        id: "p1",
+        left: 5,
+        bottom: 65,
+        transform: ""
+    },
+    {
+        id: "p2",
+        right: 10,
+        bottom: 60,
+        transform: ""
+    },
+    {
+        id: "p3",
+        right: -5,
+        bottom: 45,
+        transform: ""
+    },
+    {
+        id: "p4",
+        right: -10,
+        bottom: 0,
+        transform: ""
+    },
+    {
+        id: "p5",
+        left: 20,
+        bottom: 50,
+        transform: ""
+    },
+    {
+        id: "p6",
+        left: 2,
+        bottom: 30,
+        transform: ""
+    },
+    {
+        id: "p7",
+        left: -5,
+        bottom: 0,
+        transform: ""
+    },
+];

@@ -1,12 +1,73 @@
-import {performanceImages} from '../constants/'
+import { useMediaQuery } from 'react-responsive';
+import {performanceImages, performanceImgPositions} from '../constants/'
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap'
+import { useRef } from 'react';
 
 const Performance = () => {
-  return (
-    <section id="performance">
+    const isTablet = useMediaQuery({query : '(max-width:1024px)'});
+    const sectionRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(()=>{
+        if(!isTablet){
+            gsap.fromTo(".content p",{
+                    opacity:0,
+                    y: 10
+                },{
+                    opacity:1,
+                    y:-10,
+                    duration:2,
+                    ease:"power2.out",
+                    scrollTrigger:{
+                        trigger: '.content p',
+                        start: 'top bottom',
+                        end: 'top center',
+                        scrub: true,
+                        invalidateOnRefresh: true
+                    }
+                });
+
+            const timeline = gsap.timeline({
+                defaults: {ease: "Power1.inOut", duration : 2, overwrite: "auto"},
+                scrollTrigger:{
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "center center",
+                    scrub: 1,
+                    invalidateOnRefresh: true
+                }
+            });
+
+            performanceImgPositions.forEach((pos) =>{
+                if(pos.id === "p5") return;
+
+                interface transformVars  {
+                    left:string
+                    right:string
+                    bottom:string
+                    transform:string
+                };
+
+                const toVars:transformVars = {
+                    left: "", right: "", bottom: "", transform: ""
+                }
+
+                if(pos.left !== undefined) toVars.left = `${pos.left}%`;
+                if(pos.right !== undefined) toVars.right = `${pos.right}%`;
+                if(pos.bottom !== undefined) toVars.bottom = `${pos.bottom}%`;
+                if(pos.transform !== undefined) toVars.transform = `${pos.transform}%`;
+
+                timeline.to(`.${pos.id}`, toVars, 0);
+            });
+        }
+    },{ dependencies: [isTablet], scope: sectionRef })
+
+    return (
+    <section id="performance" ref={sectionRef}>
         <h2>Next level graphics performance. Game on</h2>
         <div className="wrapper">
             {performanceImages.map(({id, src}) => (
-                <img key={id} src={src} alt={id}  />
+                <img className={id} key={id} src={src} alt={id}  />
             )
             )}
         </div>
@@ -16,7 +77,7 @@ const Performance = () => {
             </p>
         </div>
     </section>
-  )
+    )
 }
 
 export default Performance
