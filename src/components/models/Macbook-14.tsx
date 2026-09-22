@@ -9,9 +9,11 @@ Title: macbook pro M3 16 inch 2024
 */
 
 import * as THREE from 'three'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
+import useMacbookStore from '../../store'
+import { noChangeParts } from '../../constants'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -60,8 +62,20 @@ type GLTFResult = GLTF & {
 }
 
 export default function MacbookModel14(props: React.JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('/models/macbook-14-transformed.glb') as unknown as GLTFResult
+  const { nodes, materials, scene } = useGLTF('/models/macbook-14-transformed.glb') as unknown as GLTFResult
   const texture = useTexture('/screen.png');
+  const {color} = useMacbookStore();
+
+  useEffect(()=>{
+    scene.traverse((child) => {
+      if(child.isMesh){
+        if(!noChangeParts.includes(child.name)){
+          child.material.color = new THREE.Color(color)
+        }
+      }
+    })
+  },[color]);
+
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.Object_10.geometry} material={materials.PaletteMaterial001} rotation={[Math.PI / 2, 0, 0]} />
