@@ -14,6 +14,7 @@ import { useGLTF, useTexture } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import useMacbookStore from '../../store'
 import { noChangeParts } from '../../constants'
+import { SRGBColorSpace } from 'three'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -64,17 +65,22 @@ type GLTFResult = GLTF & {
 export default function MacbookModel14(props: React.JSX.IntrinsicElements['group']) {
   const { nodes, materials, scene } = useGLTF('/models/macbook-14-transformed.glb') as unknown as GLTFResult
   const texture = useTexture('/screen.png');
+  texture.colorSpace = SRGBColorSpace;
+  texture.needsUpdate = true;
   const {color} = useMacbookStore();
 
-  useEffect(()=>{
-    scene.traverse((child) => {
-      if(child.isMesh){
-        if(!noChangeParts.includes(child.name)){
-          child.material.color = new THREE.Color(color)
+    useEffect(()=>{
+      scene.traverse((child) => {
+        if((child as THREE.Mesh).isMesh){
+          const mesh = child as THREE.Mesh
+          if (!noChangeParts.includes(mesh.name)) {
+            if (mesh.material && 'color' in mesh.material) {
+              (mesh.material as THREE.MeshStandardMaterial).color.set(color)
+            }
+          }
         }
-      }
-    })
-  },[color, scene]);
+      })
+    },[color, scene]);
 
   return (
     <group {...props} dispose={null}>
@@ -95,7 +101,7 @@ export default function MacbookModel14(props: React.JSX.IntrinsicElements['group
       <mesh geometry={nodes.Object_82.geometry} material={materials.gMtYExgrEUqPfln} rotation={[Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_96.geometry} material={materials.PaletteMaterial003} rotation={[Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_107.geometry} material={materials.JvMFZolVCdpPqjj} rotation={[Math.PI / 2, 0, 0]} />
-      <mesh geometry={nodes.Object_123.geometry} material={materials.sfCQkHOWyrsLmor} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh geometry={nodes.Object_123.geometry} rotation={[Math.PI / 2, 0, 0]}>
         <meshBasicMaterial map={texture}/>
       </mesh>
       <mesh geometry={nodes.Object_127.geometry} material={materials.ZCDwChwkbBfITSW} rotation={[Math.PI / 2, 0, 0]} />
