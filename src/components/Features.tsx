@@ -93,7 +93,7 @@ const Features = () => {
         <StudioLights/>
         <ambientLight intensity={0.5}/>
         <ModelScroll/>
-      </Canvas>\
+      </Canvas>
       <div className="absolute inset-0">
         {features.map((feature, index) =>(
           <div key={feature.id} className={clsx('box', `box${index + 1}`, feature.styles)}>
