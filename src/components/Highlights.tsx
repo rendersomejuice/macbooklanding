@@ -11,19 +11,17 @@ const Highlights = () => {
   useGSAP(() => {
     ScrollTrigger.refresh();
 
-    gsap.fromTo(['.left-column', '.right-column'], 
+    gsap.fromTo(['.masonry>.left-column>div', '.masonry>.right-column>div'], 
       {
         y: -20,
         opacity: 0
       },
       {
-        // ESTADO FINAL Y SCROLLTRIGGER
         scrollTrigger: {
           trigger: '#highlights',
-          start: isMobile ? 'top+=900 bottom-=1000' : 'top+=1000 bottom-=800',
-          end: isMobile ? 'bottom bottom' : 'bottom+=1000 bottom',
+          start: isMobile ? 'bottom center' : 'bottom center',
+          end: isMobile ? 'center bottom' : 'bottom bottom',
           scrub: 1,
-          markers: true 
         },
         y: 0,
         opacity: 1,
