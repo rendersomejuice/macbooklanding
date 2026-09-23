@@ -1,16 +1,16 @@
 import {create} from 'zustand'
+import * as THREE from 'three'
 
 const DEFAULT_COLOR:string = '#2c2e2e';
 const DEFAULT_SCALE:number = 0.08;
-const DEFAULT_TEXTURE:string = 'videos/feature-1.mp4';
 
 interface MacbookState {
     color:string,
     setColor:(color:string) => void,
     scale:number,
     setScale: (scale:number) => void,
-    texture:string,
-    setTexture: (texture:string) => void,
+    texture: THREE.VideoTexture | null,
+    setTexture: (texture: THREE.VideoTexture | null) => void,
     reset: () => void
 
 }
@@ -22,10 +22,10 @@ const useMacbookStore = create<MacbookState>((set) => ({
     scale : DEFAULT_SCALE,
     setScale : (scale:number) => set({scale}),
 
-    texture : DEFAULT_TEXTURE,
-    setTexture : (texture:string) => set({texture}),
+    texture : null,
+    setTexture: (texture: THREE.VideoTexture | null) => set({ texture }),
 
-    reset : () => set({ color : DEFAULT_COLOR, scale : DEFAULT_SCALE, texture :DEFAULT_TEXTURE })
+    reset : () => set({ color : DEFAULT_COLOR, scale : DEFAULT_SCALE, texture :null })
 }))
 
 export default useMacbookStore

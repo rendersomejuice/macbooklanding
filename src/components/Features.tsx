@@ -2,35 +2,66 @@ import { Canvas } from "@react-three/fiber"
 import StudioLights from "./three/StudioLights"
 import { features, featureSequence } from "../constants"
 import clsx from "clsx"
-import { Suspense, useEffect, useRef } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { MacBookModel } from "./models/Macbook"
 import { useMediaQuery } from "react-responsive"
 import { Html } from "@react-three/drei"
 import useMacbookStore from "../store"
 import { useGSAP } from "@gsap/react"
 import gsap from 'gsap'
+import * as THREE from 'three'
 
 const ModelScroll = () => {
-  const groupRef = useRef<any>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const isTablet = useMediaQuery({query :'(max-width:1024px)'});
   const {setTexture} = useMacbookStore();
+  const [videoTextures, setVideoTextures] = useState<THREE.VideoTexture[]>([]);
 
   useEffect(() => {
-    featureSequence.forEach((feature) => {
+    const textures = featureSequence.map((feature) => {
       //preloading all videos without putting them at the dom
       const v = document.createElement('video');
       Object.assign(v,{
-        src: feature.videoPath,
+        src: import.meta.env.BASE_URL + feature.videoPath,
         muted: true,
         playsInline: true,
-        preload: 'auto',
+        autoplay:true,
         crossOrigin : 'anonymous'
       });
-      v.load();
-    })
-  },[]);
+
+      v.play().catch(() => {
+              /* Evitamos que salten errores en consola por restricciones de Autoplay */
+      });
+
+      const texture = new THREE.VideoTexture(v);
+      texture.colorSpace = THREE.SRGBColorSpace;
+
+      texture.generateMipmaps = false; 
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      return texture;
+    });
+
+    setVideoTextures(textures);
+
+    if (textures.length > 0) {
+      setTexture(textures[0]);
+    }
+    return () => {
+      textures.forEach((t) => {
+        const videoElement = t.image as HTMLVideoElement;
+        if (videoElement) {
+          videoElement.pause();
+          videoElement.src = "";
+          videoElement.load();
+        }
+        t.dispose();
+      });
+    };
+  },[setTexture]);
 
   useGSAP(() => {
+    if (videoTextures.length === 0) return;
     //3d rotation
     const modelTimeline = gsap.timeline({
       scrollTrigger:{
@@ -59,22 +90,37 @@ const ModelScroll = () => {
 
     //content and texture animation
     timeline
-      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-1.mp4'))
-      .to('.box1', {opacity: 1, y: 0, delay: 1})
+      .call(() => {
+        setTexture(videoTextures[0]);
+        (videoTextures[0].image as HTMLVideoElement).play().catch(() => {});
+      })
+      .to('.box1', { opacity: 1, y: 0, delay: 1 })
 
-      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-2.mp4'))
-      .to('.box2', {opacity: 1, y: 0})
+      .call(() => {
+        setTexture(videoTextures[1]);
+        (videoTextures[1].image as HTMLVideoElement).play().catch(() => {});
+      })
+      .to('.box2', { opacity: 1, y: 0 })
 
-      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-3.mp4'))
-      .to('.box3', {opacity: 1, y: 0})
+      .call(() => {
+        setTexture(videoTextures[2]);
+        (videoTextures[2].image as HTMLVideoElement).play().catch(() => {});
+      })
+      .to('.box3', { opacity: 1, y: 0 })
 
-      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-4.mp4'))
-      .to('.box4', {opacity: 1, y: 0})
+      .call(() => {
+        setTexture(videoTextures[3]);
+        (videoTextures[3].image as HTMLVideoElement).play().catch(() => {});
+      })
+      .to('.box4', { opacity: 1, y: 0 })
 
-      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-5.mp4'))
-      .to('.box5', {opacity: 1, y: 0})
+      .call(() => {
+        setTexture(videoTextures[4]);
+        (videoTextures[4].image as HTMLVideoElement).play().catch(() => {});
+      })
+      .to('.box5', { opacity: 1, y: 0 });
 
-  },[]);
+  },[videoTextures, setTexture]);
 
   return(
     <group ref={groupRef}>

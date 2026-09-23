@@ -65,8 +65,6 @@ export function MacBookModel(props: React.JSX.IntrinsicElements['group']) {
   const {color, texture} = useMacbookStore();
   const { nodes, materials, scene } = useGLTF( import.meta.env.BASE_URL +'models/macbook-transformed.glb') as unknown as GLTFResult
 
-  const screen = useVideoTexture(texture);
-
   useEffect(()=>{
       scene.traverse((child) => {
         if((child as THREE.Mesh).isMesh){
@@ -100,7 +98,7 @@ export function MacBookModel(props: React.JSX.IntrinsicElements['group']) {
       <mesh geometry={nodes.Object_96.geometry} material={materials.PaletteMaterial003} rotation={[Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_107.geometry} material={materials.JvMFZolVCdpPqjj} rotation={[Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_123.geometry} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial map={screen}/>
+         {texture && <meshBasicMaterial map={texture} toneMapped={false} />}
       </mesh>
       <mesh geometry={nodes.Object_127.geometry} material={materials.ZCDwChwkbBfITSW} rotation={[Math.PI / 2, 0, 0]} />
     </group>
