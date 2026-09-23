@@ -4,7 +4,7 @@ const navbar = () => {
   return (
     <header>
         <nav>
-            <img src="/logo.svg" alt="Apple logo"/>
+            <img src={import.meta.env.BASE_URL +"logo.svg"} alt="Apple logo"/>
             <ul>
                 {NavLinks.map(({label}) => (
                     <li key={label}>

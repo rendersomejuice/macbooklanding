@@ -63,7 +63,7 @@ type GLTFResult = GLTF & {
 
 export function MacBookModel(props: React.JSX.IntrinsicElements['group']) {
   const {color, texture} = useMacbookStore();
-  const { nodes, materials, scene } = useGLTF( import.meta.env.BASE_URL +'/models/macbook-transformed.glb') as unknown as GLTFResult
+  const { nodes, materials, scene } = useGLTF( import.meta.env.BASE_URL +'models/macbook-transformed.glb') as unknown as GLTFResult
 
   const screen = useVideoTexture(texture);
 
