@@ -29,11 +29,11 @@ const Highlights = () => {
       <div className="masonry">
         <div className="left-column">
           <div>
-            <img src={ import.meta.env.BASE_URL +'/laptop.png'} alt="Laptop"/>
+            <img src={ import.meta.env.BASE_URL +'laptop.png'} alt="Laptop"/>
             <p>Fly through demanding tasks up to 9.8x times faster.</p>
           </div>
           <div>
-            <img src="/sun.png" alt="Laptop"/>
+            <img src={import.meta.env.BASE_URL +"sun.png"} alt="Laptop"/>
             <p>
               A stunning <br/>
               Liquid Retina XDR <br/>
@@ -43,12 +43,12 @@ const Highlights = () => {
         </div>
         <div className="right-column">
           <div className="apple-gradient">
-            <img src={import.meta.env.BASE_URL + "/ai.png"} alt="AI"/>
+            <img src={import.meta.env.BASE_URL + "ai.png"} alt="AI"/>
             <p>Built for<br/>
                <span>Apple intelligence.</span></p>
           </div>
           <div>
-            <img src={import.meta.env.BASE_URL +"/battery.png"} alt="Battery"/>
+            <img src={import.meta.env.BASE_URL +"battery.png"} alt="Battery"/>
             <p>
               Up to <br/>
               <span className="green-gradient">{' '}14 more hours{' '}</span><br/>
