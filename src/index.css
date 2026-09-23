@@ -231,38 +231,56 @@ body {
     }
 
     .wrapper {
-      @apply w-7xl 2xl:w-[100rem] h-[50vh] lg:h-screen relative;
+      @apply w-full lg:w-7xl 2xl:w-[100rem] h-[70vh] lg:h-screen relative;
 
       img {
         @apply max-w-40 lg:max-w-[27rem] 2xl:max-w-[35rem] object-cover object-center;
       }
 
+      /* MOBILE / TABLET */
+
       .p1 {
-        @apply absolute bottom-1/2 left-[23%] z-[1] max-sm:left-[33%];
+        @apply absolute w-[38%] max-w-none left-[-5%] top-[8%] z-[1]
+              lg:w-auto lg:max-w-[27rem] lg:top-auto lg:bottom-1/2 lg:left-[23%]
+              2xl:max-w-[35rem];
       }
 
       .p2 {
-        @apply absolute bottom-[40%] right-[17%] z-[3] max-sm:right-[37%];
+        @apply absolute w-[36%] max-w-none right-[-3%] top-[5%] z-[3]
+              lg:w-auto lg:max-w-[27rem] lg:top-auto lg:bottom-[40%] lg:right-[17%]
+              2xl:max-w-[35rem];
       }
 
       .p3 {
-        @apply absolute bottom-1/4 right-[15%] z-[2] max-sm:right-[35%];
+        @apply absolute w-[34%] max-w-none right-[2%] top-[32%] z-[2]
+              lg:w-auto lg:max-w-[27rem] lg:top-auto lg:bottom-1/4 lg:right-[15%]
+              2xl:max-w-[35rem];
       }
 
       .p4 {
-        @apply absolute bottom-[15%] right-[10%] z-[1] max-sm:right-[30%];
+        @apply absolute w-[40%] max-w-none right-[-8%] bottom-[7%] z-[1]
+              lg:w-auto lg:max-w-[27rem] lg:bottom-[15%] lg:right-[10%]
+              2xl:max-w-[35rem];
       }
 
       .p5 {
-        @apply absolute bottom-[20%] left-1/2 -translate-x-1/2 scale-150;
+        @apply absolute w-[52%] max-w-none left-1/2 top-1/2
+              -translate-x-1/2 -translate-y-1/2 z-0
+              lg:w-auto lg:max-w-[27rem] lg:top-auto lg:bottom-[20%]
+              lg:-translate-y-0 lg:scale-150
+              2xl:max-w-[35rem];
       }
 
       .p6 {
-        @apply absolute bottom-1/4 left-1/4 z-[2] max-sm:left-[35%];
+        @apply absolute w-[37%] max-w-none left-[-4%] top-[48%] z-[2]
+              lg:w-auto lg:max-w-[27rem] lg:top-auto lg:bottom-1/4 lg:left-1/4
+              2xl:max-w-[35rem];
       }
 
       .p7 {
-        @apply absolute bottom-[5%] left-[15%] z-[3] max-sm:left-[35%];
+        @apply absolute w-[42%] max-w-none left-[8%] bottom-[3%] z-[3]
+              lg:w-auto lg:max-w-[27rem] lg:bottom-[5%] lg:left-[15%]
+              2xl:max-w-[35rem];
       }
     }
 

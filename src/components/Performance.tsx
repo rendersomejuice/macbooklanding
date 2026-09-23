@@ -8,59 +8,167 @@ const Performance = () => {
     const isTablet = useMediaQuery({query : '(max-width:1024px)'});
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    useGSAP(()=>{
-        if(!isTablet){
-            gsap.fromTo(".content p",{
-                    opacity:0,
-                    y: 10
-                },{
-                    opacity:1,
-                    y:-10,
-                    duration:2,
-                    ease:"power2.out",
-                    scrollTrigger:{
-                        trigger: '.content p',
-                        start: 'top bottom',
-                        end: 'top center',
-                        scrub: true,
-                        invalidateOnRefresh: true
-                    }
-                });
+    useGSAP(() => {
 
-            const timeline = gsap.timeline({
-                defaults: {ease: "Power1.inOut", duration : 2, overwrite: "auto"},
-                scrollTrigger:{
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "center center",
+    if (!isTablet) {
+
+        gsap.fromTo(".content p",
+            {
+                opacity: 0,
+                y: 10
+            },
+            {
+                opacity: 1,
+                y: -10,
+                duration: 2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: '.content p',
+                    start: 'top bottom',
+                    end: 'top center',
+                    scrub: true,
+                    invalidateOnRefresh: true
+                }
+            }
+        );
+
+        const timeline = gsap.timeline({
+            defaults: {
+                ease: "Power1.inOut",
+                duration: 2,
+                overwrite: "auto"
+            },
+
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top bottom",
+                end: "center center",
+                scrub: 1,
+                invalidateOnRefresh: true
+            }
+        });
+
+        performanceImgPositions.forEach((pos) => {
+
+            if (pos.id === "p5") return;
+
+            interface transformVars {
+                left: string
+                right: string
+                bottom: string
+                transform: string
+            }
+
+            const toVars: transformVars = {
+                left: "",
+                right: "",
+                bottom: "",
+                transform: ""
+            };
+
+            if (pos.left !== undefined)
+                toVars.left = `${pos.left}%`;
+
+            if (pos.right !== undefined)
+                toVars.right = `${pos.right}%`;
+
+            if (pos.bottom !== undefined)
+                toVars.bottom = `${pos.bottom}%`;
+
+            if (pos.transform !== undefined)
+                toVars.transform = `${pos.transform}%`;
+
+            timeline.to(`.${pos.id}`, toVars, 0);
+        });
+
+    } else {
+
+        const mobileTimeline = gsap.timeline({
+            defaults: {
+                ease: "power2.out"
+            },
+
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 85%",
+                end: "top 20%",
+                scrub: 1,
+                invalidateOnRefresh: true
+            }
+        });
+
+        mobileTimeline.from(".p1", {
+            x: 100,
+            y: 100,
+            scale: 0.65,
+            opacity: 0
+        }, 0);
+
+        mobileTimeline.from(".p2", {
+            x: -100,
+            y: 110,
+            scale: 0.65,
+            opacity: 0
+        }, 0);
+
+        mobileTimeline.from(".p3", {
+            x: -80,
+            y: 30,
+            scale: 0.7,
+            opacity: 0
+        }, 0);
+
+        mobileTimeline.from(".p4", {
+            x: -100,
+            y: -80,
+            scale: 0.7,
+            opacity: 0
+        }, 0);
+
+        mobileTimeline.from(".p6", {
+            x: 100,
+            y: -20,
+            scale: 0.7,
+            opacity: 0
+        }, 0);
+
+        mobileTimeline.from(".p7", {
+            x: 80,
+            y: -100,
+            scale: 0.7,
+            opacity: 0
+        }, 0);
+
+        mobileTimeline.from(".p5", {
+            scale: 0.7,
+            opacity: 0
+        }, 0);
+
+
+        gsap.fromTo(".content p",
+            {
+                opacity: 0,
+                y: 30
+            },
+            {
+                opacity: 1,
+                y: 0,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".content p",
+                    start: "top 90%",
+                    end: "top 65%",
                     scrub: 1,
                     invalidateOnRefresh: true
                 }
-            });
+            }
+        );
+    }
 
-            performanceImgPositions.forEach((pos) =>{
-                if(pos.id === "p5") return;
-
-                interface transformVars  {
-                    left:string
-                    right:string
-                    bottom:string
-                    transform:string
-                };
-
-                const toVars:transformVars = {
-                    left: "", right: "", bottom: "", transform: ""
-                }
-
-                if(pos.left !== undefined) toVars.left = `${pos.left}%`;
-                if(pos.right !== undefined) toVars.right = `${pos.right}%`;
-                if(pos.bottom !== undefined) toVars.bottom = `${pos.bottom}%`;
-                if(pos.transform !== undefined) toVars.transform = `${pos.transform}%`;
-
-                timeline.to(`.${pos.id}`, toVars, 0);
-            });
-        }
-    },{ dependencies: [isTablet], scope: sectionRef })
+}, {
+    dependencies: [isTablet],
+    scope: sectionRef
+});
 
     return (
     <section id="performance" ref={sectionRef}>
