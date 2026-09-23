@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import { useMediaQuery } from 'react-responsive'
 
 const Showcase = () => {
-    const isTablet = useMediaQuery({query : 'max-width:(1024px)'});
+    const isTablet = useMediaQuery({query : '(max-width:1024px)'});
 
     useGSAP(()=>{
         if(!isTablet){
@@ -13,10 +13,9 @@ const Showcase = () => {
                     start: "top top",
                     end: "bottom top",
                     scrub: true,
-                    pin: true,
+                    pin: isTablet ? false : true,
                 } 
             });
-
             timeline.to(".mask img", {
                 scale:1.5
             }).to('.content', {opacity: 1, y: 0, ease : 'power1.in' })
