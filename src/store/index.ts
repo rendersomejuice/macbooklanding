@@ -2,7 +2,7 @@ import {create} from 'zustand'
 
 const DEFAULT_COLOR:string = '#2c2e2e';
 const DEFAULT_SCALE:number = 0.08;
-const DEFAULT_TEXTURE:string = '/videos/feature-1.mp4';
+const DEFAULT_TEXTURE:string = 'videos/feature-1.mp4';
 
 interface MacbookState {
     color:string,
