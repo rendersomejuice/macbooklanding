@@ -58,7 +58,8 @@ const ModelSwitcher = ({scale, isMobile}:ModelSwitcherProps) => {
         speed : 1,
         zoom : 1,
         azimuth : [-Infinity, Infinity] as [number, number],
-        config : {mass : 1, tension : 0, friction : 1}
+        config : {mass : 1, tension : 0, friction : 1},
+        touchAction: "pan-y"
     }
   return (
     <>
