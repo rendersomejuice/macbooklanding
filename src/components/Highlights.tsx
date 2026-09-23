@@ -1,29 +1,38 @@
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive"
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Highlights = () => {
   const isMobile = useMediaQuery({query : '(max-width:1024px)'});
 
   useGSAP(() => {
-    gsap.to(['.left-column', '.right-column'],{
-      scrollTrigger:{
-        trigger: '#highlights',
-        start: isMobile ? 'top+=1200 bottom-=1000' : 'top top',
-        end: isMobile ? 'bottom bottom' : 'top bottom',
-        scrub:2,
-        invalidateOnRefresh: true,
-        refreshPriority: 1,
-        markers:true
+    ScrollTrigger.refresh();
 
+    gsap.fromTo(['.left-column', '.right-column'], 
+      {
+        y: -20,
+        opacity: 0
       },
-      y: 0,
-      opacity: 1,
-      stagger: 1.5,
-      duration: 2,
-      ease: 'power1.inOut' 
-    });
-  });
+      {
+        // ESTADO FINAL Y SCROLLTRIGGER
+        scrollTrigger: {
+          trigger: '#highlights',
+          start: isMobile ? 'top+=900 bottom-=1000' : 'top+=1000 bottom-=800',
+          end: isMobile ? 'bottom bottom' : 'bottom+=1000 bottom',
+          scrub: 1,
+          markers: true 
+        },
+        y: 0,
+        opacity: 1,
+        stagger: 0.3,
+        duration: 1,
+        ease: 'power1.inOut' 
+      }
+    );
+  }, [isMobile]);
 
   return (
     <section id="highlights">
