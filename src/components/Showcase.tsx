@@ -1,9 +1,36 @@
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react';
 import { useMediaQuery } from 'react-responsive'
+import { useEffect,useRef } from 'react';
 
 const Showcase = () => {
     const isTablet = useMediaQuery({query : '(max-width:1024px)'});
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+
+        if (!video) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+            if (entry.isIntersecting) {
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+            },
+            {
+            threshold: 0.1
+            }
+        );
+
+        observer.observe(video);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
 
     useGSAP(()=>{
         if(!isTablet){
@@ -26,7 +53,7 @@ const Showcase = () => {
     return (
     <section id="showcase" className="relative min-h-[100vh]">
         <div className="media">
-            <video src={import.meta.env.BASE_URL +"videos/game.mp4"} loop muted autoPlay playsInline/>
+            <video ref={videoRef} src={import.meta.env.BASE_URL +"videos/game.mp4"} loop muted playsInline/>
             <div className="mask">
                 <img src={import.meta.env.BASE_URL +"mask-logo.svg"}/>
             </div>

@@ -11,15 +11,30 @@ const OFFSET_DISTANCE:number = 5;
 const SCALE_LARGE_DESKTOP:number = 0.08;
 const SCALE_LARGE_MOBILE:number = 0.05;
 
-const fadeMeshes = (group:any, opacity:number) => {
-    if(!group) return;
-    group.traverse((child:any) =>{
-        if(child.isMesh) {
-            child.material.transparent = true,
-            gsap.to(child.material, {opacity, duration : ANIMATION_DURATION});
+const fadeMeshes = (group: any, opacity: number,hideAfter = false) => {
+    if (!group) return;
+
+    if (opacity > 0) {
+        group.visible = true;
+    }
+
+    group.traverse((child: any) => {
+        if (child.isMesh) {
+            child.material.transparent = true;
+
+            gsap.to(child.material, {
+                opacity,
+                duration: ANIMATION_DURATION
+            });
         }
-    })
-}
+    });
+
+    if (hideAfter) {
+        gsap.delayedCall(ANIMATION_DURATION, () => {
+            group.visible = false;
+        });
+    }
+};
 
 const moveGroup = (group:any, x:number) => {
     if(!group) return;
@@ -38,18 +53,23 @@ const ModelSwitcher = ({scale, isMobile}:ModelSwitcherProps) => {
     const showLargeMacbook = scale === SCALE_LARGE_MOBILE || scale === SCALE_LARGE_DESKTOP;
 
     useGSAP(() =>{
-        if(showLargeMacbook){
+        if (showLargeMacbook) {
+            largeMacbookRef.current.visible = true;
+
             moveGroup(smallMacbookRef.current, -OFFSET_DISTANCE);
             moveGroup(largeMacbookRef.current, 0);
 
-            fadeMeshes(smallMacbookRef.current,0);
-            fadeMeshes(largeMacbookRef.current,1);
-        }else{
+            fadeMeshes(smallMacbookRef.current, 0, true);
+            fadeMeshes(largeMacbookRef.current, 1);
+
+        } else {
+            smallMacbookRef.current.visible = true;
+
             moveGroup(smallMacbookRef.current, 0);
             moveGroup(largeMacbookRef.current, OFFSET_DISTANCE);
 
-            fadeMeshes(smallMacbookRef.current,1);
-            fadeMeshes(largeMacbookRef.current,0);
+            fadeMeshes(smallMacbookRef.current, 1);
+            fadeMeshes(largeMacbookRef.current, 0, true);
         }
     },[scale])
 

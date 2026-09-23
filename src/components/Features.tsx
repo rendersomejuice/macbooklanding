@@ -11,11 +11,25 @@ import { useGSAP } from "@gsap/react"
 import gsap from 'gsap'
 import * as THREE from 'three'
 
-const ModelScroll = () => {
+const ModelScroll = ({ isVisible }: { isVisible: boolean }) => {
   const groupRef = useRef<THREE.Group>(null);
   const isTablet = useMediaQuery({query :'(max-width:1024px)'});
   const {setTexture} = useMacbookStore();
   const [videoTextures, setVideoTextures] = useState<THREE.VideoTexture[]>([]);
+
+  const playTexture = (index: number) => {
+  videoTextures.forEach((texture, i) => {
+    const video = texture.image as HTMLVideoElement;
+
+    if (i === index) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  });
+
+  setTexture(videoTextures[index]);
+};
 
   useEffect(() => {
     const textures = featureSequence.map((feature) => {
@@ -25,12 +39,7 @@ const ModelScroll = () => {
         src: import.meta.env.BASE_URL + feature.videoPath,
         muted: true,
         playsInline: true,
-        autoplay:true,
         crossOrigin : 'anonymous'
-      });
-
-      v.play().catch(() => {
-              /* Evitamos que salten errores en consola por restricciones de Autoplay */
       });
 
       const texture = new THREE.VideoTexture(v);
@@ -59,6 +68,17 @@ const ModelScroll = () => {
       });
     };
   },[setTexture]);
+
+  useEffect(() => {
+    if (videoTextures.length === 0) return;
+
+    if (!isVisible) {
+        videoTextures.forEach((texture) => {
+            const video = texture.image as HTMLVideoElement;
+            video.pause();
+        });
+    }
+  }, [isVisible, videoTextures]);
 
   useGSAP(() => {
     if (videoTextures.length === 0) return;
@@ -91,32 +111,27 @@ const ModelScroll = () => {
     //content and texture animation
     timeline
       .call(() => {
-        setTexture(videoTextures[0]);
-        (videoTextures[0].image as HTMLVideoElement).play().catch(() => {});
+        playTexture(0);
       })
       .to('.box1', { opacity: 1, y: 0, delay: 1 })
 
       .call(() => {
-        setTexture(videoTextures[1]);
-        (videoTextures[1].image as HTMLVideoElement).play().catch(() => {});
+        playTexture(1);
       })
       .to('.box2', { opacity: 1, y: 0 })
 
       .call(() => {
-        setTexture(videoTextures[2]);
-        (videoTextures[2].image as HTMLVideoElement).play().catch(() => {});
+        playTexture(2);
       })
       .to('.box3', { opacity: 1, y: 0 })
 
       .call(() => {
-        setTexture(videoTextures[3]);
-        (videoTextures[3].image as HTMLVideoElement).play().catch(() => {});
+        playTexture(3);
       })
       .to('.box4', { opacity: 1, y: 0 })
 
       .call(() => {
-        setTexture(videoTextures[4]);
-        (videoTextures[4].image as HTMLVideoElement).play().catch(() => {});
+        playTexture(4);
       })
       .to('.box5', { opacity: 1, y: 0 });
 
@@ -132,13 +147,35 @@ const ModelScroll = () => {
 } 
 
 const Features = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+      const section = sectionRef.current;
+
+      if (!section) return;
+
+      const observer = new IntersectionObserver(
+          ([entry]) => {
+              setIsVisible(entry.isIntersecting);
+          },
+          {
+              threshold: 0
+          }
+      );
+
+      observer.observe(section);
+
+      return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id='features'>
+    <section id='features' ref={sectionRef}>
       <h2>See it all in a new light.</h2>
-      <Canvas id="f-canvas" camera={{}}>
+      <Canvas id="f-canvas" dpr={1} frameloop={isVisible ? "always" : "never"} camera={{}}>
         <StudioLights/>
         <ambientLight intensity={0.5}/>
-        <ModelScroll/>
+        <ModelScroll isVisible={isVisible}/>
       </Canvas>
       <div className="absolute inset-0">
         {features.map((feature, index) =>(

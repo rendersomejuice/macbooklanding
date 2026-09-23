@@ -4,9 +4,32 @@ const Hero = () => {
 
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    useEffect(()=>{
-        if(videoRef.current) videoRef.current.playbackRate = 2;
-    }, [])
+    useEffect(() => {
+        const video = videoRef.current;
+
+        if (!video) return;
+
+        video.playbackRate = 2;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+            if (entry.isIntersecting) {
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+            },
+            {
+            threshold: 0.1
+            }
+        );
+
+        observer.observe(video);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
 
   return (
     <section id="hero">
@@ -15,7 +38,7 @@ const Hero = () => {
             <img src={import.meta.env.BASE_URL +"/title.png"} alt="Title"/>
         </div>
 
-        <video ref={videoRef} src={import.meta.env.BASE_URL + "/videos/hero.mp4"} autoPlay muted playsInline />
+        <video ref={videoRef} src={import.meta.env.BASE_URL + "/videos/hero.mp4"} muted playsInline />
         <button>Buy</button>
         <p>$1500 or $133/mo for 12 months</p>
     </section>

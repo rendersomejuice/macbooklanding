@@ -4,12 +4,36 @@ import {Canvas} from '@react-three/fiber'
 import StudioLights from './three/StudioLights';
 import ModelSwitcher from './three/ModelSwitcher';
 import { useMediaQuery } from 'react-responsive';
+import { useEffect, useRef, useState } from 'react';
 
 const ProductViewer = () => {
     const {color, scale, setColor, setScale} = useMacbookStore();
     const isMobile:boolean = useMediaQuery({query : '(max-width : 1024px)'}); 
+
+    const sectionRef = useRef<HTMLElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const section = sectionRef.current;
+
+        if (!section) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsVisible(entry.isIntersecting);
+            },
+            {
+                threshold: 0
+            }
+        );
+
+        observer.observe(section);
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <section id="product-viewer">
+        <section id="product-viewer" ref={sectionRef}>
             <h2>Take a closer look.</h2>
             <div className="controls">
                 <p className="info">Macbook Pro {scale === 0.06 ? '14"' : '16"' } in {color === '#adb5bd' ? 'space grey' : 'dark' }.</p>
@@ -40,7 +64,7 @@ const ProductViewer = () => {
                     </div>
                 </div>
             </div>
-            <Canvas id="canvas" style={{ touchAction: 'pan-y' }} camera={{position : [0,2,5], fov : 50, near : 0.1, far : 100}}>
+            <Canvas id="canvas" dpr={1} frameloop={isVisible ? "always" : "never"} style={{ touchAction: 'pan-y' }} camera={{position : [0,2,5], fov : 50, near : 0.1, far : 100} }>
                 <StudioLights/>
                 <ModelSwitcher scale={isMobile ? scale -0.03 : scale} isMobile={isMobile}/>
             </Canvas>
