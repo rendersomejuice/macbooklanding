@@ -59,7 +59,11 @@ const ModelSwitcher = ({scale, isMobile}:ModelSwitcherProps) => {
         zoom : 1,
         azimuth : [-Infinity, Infinity] as [number, number],
         config : {mass : 1, tension : 0, friction : 1},
-        touchAction: "pan-y"
+            gesture: {
+            axis: 'x', 
+            lockDirection: true,
+            eventOptions: { passive: true } 
+    }
     }
   return (
     <>
