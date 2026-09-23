@@ -12,10 +12,10 @@ const Hero = () => {
     <section id="hero">
         <div>
             <h1>MacBook Pro</h1>
-            <img src="/title.png" alt="Title"/>
+            <img src={import.meta.env.BASE_URL +"/title.png"} alt="Title"/>
         </div>
 
-        <video ref={videoRef} src={import.meta.env.BASE_URL +"/videos/hero.mp4"} autoPlay muted playsInline />
+        <video ref={videoRef} src={import.meta.env.BASE_URL + "/videos/hero.mp4"} autoPlay muted playsInline />
         <button>Buy</button>
         <p>$1500 or $133/mo for 12 months</p>
     </section>
