@@ -63,8 +63,8 @@ type GLTFResult = GLTF & {
 }
 
 export default function MacbookModel16(props: React.JSX.IntrinsicElements['group']) {
-  const { nodes, materials, scene } = useGLTF('/models/macbook-16-transformed.glb') as unknown as GLTFResult
-  const texture = useTexture('/screen.png');
+  const { nodes, materials, scene } = useGLTF(import.meta.env.BASE_URL + '/models/macbook-16-transformed.glb') as unknown as GLTFResult
+  const texture = useTexture(import.meta.env.BASE_URL + '/screen.png');
   texture.colorSpace = SRGBColorSpace;
   texture.needsUpdate = true;
   const {color} = useMacbookStore();

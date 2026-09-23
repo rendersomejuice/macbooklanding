@@ -59,19 +59,19 @@ const ModelScroll = () => {
 
     //content and texture animation
     timeline
-      .call(() => setTexture('/videos/feature-1.mp4'))
+      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-1.mp4'))
       .to('.box1', {opacity: 1, y: 0, delay: 1})
 
-      .call(() => setTexture('/videos/feature-2.mp4'))
+      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-2.mp4'))
       .to('.box2', {opacity: 1, y: 0})
 
-      .call(() => setTexture('/videos/feature-3.mp4'))
+      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-3.mp4'))
       .to('.box3', {opacity: 1, y: 0})
 
-      .call(() => setTexture('/videos/feature-4.mp4'))
+      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-4.mp4'))
       .to('.box4', {opacity: 1, y: 0})
 
-      .call(() => setTexture('/videos/feature-5.mp4'))
+      .call(() => setTexture(import.meta.env.BASE_URL +'/videos/feature-5.mp4'))
       .to('.box5', {opacity: 1, y: 0})
 
   },[]);

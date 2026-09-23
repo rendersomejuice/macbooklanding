@@ -5,7 +5,7 @@ const Footer = () => {
     <footer>
       <div className="info">
         <p>More ways to shop. Find an Apple store or other retailer near you.</p>
-        <img src="/logo.svg" alt="Apple logo" />
+        <img src={import.meta.env.BASE_URL + "/logo.svg"} alt="Apple logo" />
       </div>
       <hr />
       <div className="links">
